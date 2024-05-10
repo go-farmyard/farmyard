@@ -2,6 +2,7 @@ package fmorm
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"github.com/go-farmyard/farmyard/fmutil"
 	"reflect"
@@ -284,7 +285,7 @@ func (cb *CmdBuilder) SelectOne(result any) (found bool, err error) {
 	err = cb.orm.dbExecutor.Get(result, sqlQuery, cb.sqlCmd.Args...)
 	if err != nil {
 		resetToZeroValue(result)
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			err = nil
 		}
 	} else {

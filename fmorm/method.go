@@ -6,24 +6,25 @@ import (
 )
 
 func OneWhere[T TableNameProvider](d *Orm, clause any, args ...any) (ret T) {
-	var model T
-	typ := reflect.TypeOf(model)
-	model = reflect.New(typ.Elem()).Interface().(T)
-	found, err := d.Where(clause, args...).SelectOne(ret)
+	typ := reflect.TypeOf(ret)
+	model := reflect.New(typ.Elem()).Interface().(T)
+	found, err := d.Where(clause, args...).SelectOne(model)
 	fmutil.MustNoError(err, "sql select failed")
 	if !found {
 		return
 	}
-	return ret
+	return model
 }
 
-func OneByModel[T TableNameProvider](d *Orm, model T) (ret T) {
-	found, err := d.Where(CondModel(model)).SelectOne(ret)
+func OneByModel[T TableNameProvider](d *Orm, model T) (_ T) {
+	typ := reflect.TypeOf(model)
+	res := reflect.New(typ.Elem()).Interface().(T)
+	found, err := d.Where(CondModel(model)).SelectOne(res)
 	fmutil.MustNoError(err, "sql select failed")
 	if !found {
 		return
 	}
-	return ret
+	return res
 }
 
 func One[T any](cb *CmdBuilder) (ret T) {
