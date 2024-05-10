@@ -89,11 +89,11 @@ type ChainExecutor struct {
 
 func (ce *ChainExecutor) Next() Response {
 	// TODO: support change *Request and ResponseWriter when calling Next
-	p := ce.chain.middlewares[ce.nextIdx]
-	ce.nextIdx++
-	if ce.nextIdx > len(ce.chain.middlewares) {
+	if ce.nextIdx >= len(ce.chain.middlewares) {
 		return ce.chain.endpoint.Call(ce, false)
 	} else {
+		p := ce.chain.middlewares[ce.nextIdx]
+		ce.nextIdx++
 		return p.Call(ce, true)
 	}
 }
