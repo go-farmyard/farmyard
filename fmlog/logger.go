@@ -33,7 +33,7 @@ func newLogger(parent *Logger, name string) *Logger {
 	}
 	if parent != nil {
 		l.level = parent.level
-		l.fullName = parent.fullName + fmutil.If(parent.fullName == "", "", ".") + name
+		l.fullName = parent.fullName + fmutil.Iif(parent.fullName == "", "", ".") + name
 	} else {
 		l.fullName = name
 	}
