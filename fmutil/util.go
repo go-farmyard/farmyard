@@ -18,7 +18,7 @@ func Def[T any](defArgs []T, def T) (ret T) {
 	return def
 }
 
-func If[T any](v bool, t, f T) T {
+func Iif[T any](v bool, t, f T) T {
 	if v {
 		return t
 	}

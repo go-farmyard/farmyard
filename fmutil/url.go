@@ -15,23 +15,19 @@ func BuildUrl(base, path string, params Map) string {
 		sp := strings.HasPrefix(path, "/")
 		if !ss && !sp {
 			raw = base + "/" + path
-		} else if ss || sp {
+		} else if ss != sp {
 			raw = base + path
-		} else {
+		} else /* ss && sp */ {
 			raw = base + path[1:]
 		}
 	}
 	if params != nil {
+		alreadyHasQueryParams := strings.Contains(raw, "?")
 		vals := url.Values{}
 		for k, v := range params {
 			vals.Add(k, AsString(v))
 		}
-		if strings.Contains(raw, "?") {
-			raw += "&"
-		} else {
-			raw += "?"
-		}
-		raw += vals.Encode()
+		raw += Iif(alreadyHasQueryParams, "&", "?") + vals.Encode()
 	}
 	return raw
 }

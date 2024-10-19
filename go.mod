@@ -1,6 +1,6 @@
 module github.com/go-farmyard/farmyard
 
-go 1.19
+go 1.23
 
 require (
 	github.com/gorilla/sessions v1.2.1
